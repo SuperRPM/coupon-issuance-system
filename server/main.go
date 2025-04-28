@@ -6,29 +6,32 @@ import (
 	"net/http"
 
 	"connectrpc.com/connect"
-	greetv1 "github.com/SuperRPM/coupon-issuance-system/gen/greet/v1"
-	"github.com/SuperRPM/coupon-issuance-system/gen/greet/v1/greetv1connect"
+	couponv1 "github.com/SuperRPM/coupon-issuance-system/gen/proto/coupon/v1"
+	"github.com/SuperRPM/coupon-issuance-system/gen/proto/coupon/v1/couponv1connect"
 	"github.com/rs/cors"
 )
 
-type GreetServer struct{}
+type CouponServer struct{}
 
-func (s *GreetServer) Greet(
+func (s *CouponServer) IssueCoupon(
 	ctx context.Context,
-	req *connect.Request[greetv1.GreetRequest],
-) (*connect.Response[greetv1.GreetResponse], error) {
-	log.Println("Greet called with:", req.Msg)
+	req *connect.Request[couponv1.IssueCouponRequest],
+) (*connect.Response[couponv1.IssueCouponResponse], error) {
+	log.Println("IssueCoupon called with:", req.Msg)
 
-	response := &greetv1.GreetResponse{
-		Greeting: "Hello, " + req.Msg.Name,
+	// TODO: 실제 쿠폰 발급 로직 구현
+	response := &couponv1.IssueCouponResponse{
+		CouponId:   "test-coupon-id",
+		CouponCode: "TEST-CODE-123",
 	}
+
 	return connect.NewResponse(response), nil
 }
 
 func main() {
-	greetServer := &GreetServer{}
+	couponServer := &CouponServer{}
 	mux := http.NewServeMux()
-	path, handler := greetv1connect.NewGreetServiceHandler(greetServer)
+	path, handler := couponv1connect.NewCouponServiceHandler(couponServer)
 	mux.Handle(path, handler)
 
 	// CORS 설정

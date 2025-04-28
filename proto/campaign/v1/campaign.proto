@@ -1,0 +1,33 @@
+syntax = "proto3";
+
+package campaign.v1;
+
+option go_package = "github.com/SuperRPM/coupon-issuance-system/gen/campaign/v1;campaignv1";
+
+service CampaignService {
+  rpc CreateCampaign(CreateCampaignRequest) returns (CreateCampaignResponse) {}
+  rpc GetCampaign(GetCampaignRequest) returns (GetCampaignResponse) {}
+}
+
+message CreateCampaignRequest {
+  string name = 1;
+  int32 limit = 2;
+}
+
+message CreateCampaignResponse {
+  int32 id = 1;
+  string greeting = 2;
+  int32 limit = 3;
+  int32 issued_count = 4;
+}
+
+message GetCampaignRequest {
+  string campaign_id = 1;
+}
+
+message GetCampaignResponse {
+  string id = 1;
+  string name = 2;
+  int32 limit = 3;
+  int32 issued_count = 4;
+}
