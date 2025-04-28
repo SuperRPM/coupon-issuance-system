@@ -2,7 +2,7 @@ package coupon
 
 // Coupon은 쿠폰을 나타내는 엔티티입니다.
 type Coupon struct {
-	ID         string
+	ID         int
 	CampaignID int
 	Code       string
 	Used       bool
@@ -13,11 +13,5 @@ func NewCoupon(campaignID int, code string) *Coupon {
 	return &Coupon{
 		CampaignID: campaignID,
 		Code:       code,
-		Used:       false,
 	}
-}
-
-// Use는 쿠폰을 사용합니다.
-func (c *Coupon) Use() {
-	c.Used = true
 }

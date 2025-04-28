@@ -28,60 +28,14 @@ func (h *Handler) IssueCoupon(
 ) (*connect.Response[couponv1.IssueCouponResponse], error) {
 	log.Println("IssueCoupon called with:", req.Msg)
 
-	c, err := h.service.IssueCoupon(ctx, int(req.Msg.CampaignId), req.Msg.Code)
+	c, err := h.service.IssueCoupon(ctx, int(req.Msg.CampaignId))
 	if err != nil {
 		return nil, err
 	}
 
 	response := &couponv1.IssueCouponResponse{
-		Id:         int32(c.ID),
-		CampaignId: int32(c.CampaignID),
-		Code:       c.Code,
-		Used:       c.Used,
-	}
-
-	return connect.NewResponse(response), nil
-}
-
-// GetCoupon은 ID로 쿠폰을 조회합니다.
-func (h *Handler) GetCoupon(
-	ctx context.Context,
-	req *connect.Request[couponv1.GetCouponRequest],
-) (*connect.Response[couponv1.GetCouponResponse], error) {
-	log.Println("GetCoupon called with:", req.Msg)
-
-	c, err := h.service.GetCoupon(ctx, int(req.Msg.CouponId))
-	if err != nil {
-		return nil, err
-	}
-
-	response := &couponv1.GetCouponResponse{
-		Id:         int32(c.ID),
-		CampaignId: int32(c.CampaignID),
-		Code:       c.Code,
-		Used:       c.Used,
-	}
-
-	return connect.NewResponse(response), nil
-}
-
-// UseCoupon은 쿠폰을 사용합니다.
-func (h *Handler) UseCoupon(
-	ctx context.Context,
-	req *connect.Request[couponv1.UseCouponRequest],
-) (*connect.Response[couponv1.UseCouponResponse], error) {
-	log.Println("UseCoupon called with:", req.Msg)
-
-	c, err := h.service.UseCoupon(ctx, int(req.Msg.CouponId))
-	if err != nil {
-		return nil, err
-	}
-
-	response := &couponv1.UseCouponResponse{
-		Id:         int32(c.ID),
-		CampaignId: int32(c.CampaignID),
-		Code:       c.Code,
-		Used:       c.Used,
+		CouponId:   int32(c.ID),
+		CouponCode: c.Code,
 	}
 
 	return connect.NewResponse(response), nil
