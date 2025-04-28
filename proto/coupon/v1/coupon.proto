@@ -9,10 +9,10 @@ service CouponService {
 }
 
 message IssueCouponRequest {
-  string campaign_id = 1;
+  int32 campaign_id = 1;
 }
 
 message IssueCouponResponse {
-  string coupon_id = 1;
+  int32 coupon_id = 1;
   string coupon_code = 2;
 }

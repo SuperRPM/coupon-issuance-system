@@ -23,7 +23,7 @@ const (
 
 type IssueCouponRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	CampaignId    string                 `protobuf:"bytes,1,opt,name=campaign_id,json=campaignId,proto3" json:"campaign_id,omitempty"`
+	CampaignId    int32                  `protobuf:"varint,1,opt,name=campaign_id,json=campaignId,proto3" json:"campaign_id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -58,16 +58,16 @@ func (*IssueCouponRequest) Descriptor() ([]byte, []int) {
 	return file_proto_coupon_v1_coupon_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *IssueCouponRequest) GetCampaignId() string {
+func (x *IssueCouponRequest) GetCampaignId() int32 {
 	if x != nil {
 		return x.CampaignId
 	}
-	return ""
+	return 0
 }
 
 type IssueCouponResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	CouponId      string                 `protobuf:"bytes,1,opt,name=coupon_id,json=couponId,proto3" json:"coupon_id,omitempty"`
+	CouponId      int32                  `protobuf:"varint,1,opt,name=coupon_id,json=couponId,proto3" json:"coupon_id,omitempty"`
 	CouponCode    string                 `protobuf:"bytes,2,opt,name=coupon_code,json=couponCode,proto3" json:"coupon_code,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -103,11 +103,11 @@ func (*IssueCouponResponse) Descriptor() ([]byte, []int) {
 	return file_proto_coupon_v1_coupon_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *IssueCouponResponse) GetCouponId() string {
+func (x *IssueCouponResponse) GetCouponId() int32 {
 	if x != nil {
 		return x.CouponId
 	}
-	return ""
+	return 0
 }
 
 func (x *IssueCouponResponse) GetCouponCode() string {
@@ -123,10 +123,10 @@ const file_proto_coupon_v1_coupon_proto_rawDesc = "" +
 	"\n" +
 	"\x1cproto/coupon/v1/coupon.proto\x12\tcoupon.v1\"5\n" +
 	"\x12IssueCouponRequest\x12\x1f\n" +
-	"\vcampaign_id\x18\x01 \x01(\tR\n" +
+	"\vcampaign_id\x18\x01 \x01(\x05R\n" +
 	"campaignId\"S\n" +
 	"\x13IssueCouponResponse\x12\x1b\n" +
-	"\tcoupon_id\x18\x01 \x01(\tR\bcouponId\x12\x1f\n" +
+	"\tcoupon_id\x18\x01 \x01(\x05R\bcouponId\x12\x1f\n" +
 	"\vcoupon_code\x18\x02 \x01(\tR\n" +
 	"couponCode2_\n" +
 	"\rCouponService\x12N\n" +

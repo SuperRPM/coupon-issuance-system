@@ -16,17 +16,17 @@ message CreateCampaignRequest {
 
 message CreateCampaignResponse {
   int32 id = 1;
-  string greeting = 2;
+  string name = 2;
   int32 limit = 3;
   int32 issued_count = 4;
 }
 
 message GetCampaignRequest {
-  string campaign_id = 1;
+  int32 id = 1;
 }
 
 message GetCampaignResponse {
-  string id = 1;
+  int32 id = 1;
   string name = 2;
   int32 limit = 3;
   int32 issued_count = 4;

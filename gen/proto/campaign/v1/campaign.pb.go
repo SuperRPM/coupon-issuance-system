@@ -76,7 +76,7 @@ func (x *CreateCampaignRequest) GetLimit() int32 {
 type CreateCampaignResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
-	Greeting      string                 `protobuf:"bytes,2,opt,name=greeting,proto3" json:"greeting,omitempty"`
+	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	Limit         int32                  `protobuf:"varint,3,opt,name=limit,proto3" json:"limit,omitempty"`
 	IssuedCount   int32                  `protobuf:"varint,4,opt,name=issued_count,json=issuedCount,proto3" json:"issued_count,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -120,9 +120,9 @@ func (x *CreateCampaignResponse) GetId() int32 {
 	return 0
 }
 
-func (x *CreateCampaignResponse) GetGreeting() string {
+func (x *CreateCampaignResponse) GetName() string {
 	if x != nil {
-		return x.Greeting
+		return x.Name
 	}
 	return ""
 }
@@ -143,7 +143,7 @@ func (x *CreateCampaignResponse) GetIssuedCount() int32 {
 
 type GetCampaignRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	CampaignId    string                 `protobuf:"bytes,1,opt,name=campaign_id,json=campaignId,proto3" json:"campaign_id,omitempty"`
+	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -178,16 +178,16 @@ func (*GetCampaignRequest) Descriptor() ([]byte, []int) {
 	return file_proto_campaign_v1_campaign_proto_rawDescGZIP(), []int{2}
 }
 
-func (x *GetCampaignRequest) GetCampaignId() string {
+func (x *GetCampaignRequest) GetId() int32 {
 	if x != nil {
-		return x.CampaignId
+		return x.Id
 	}
-	return ""
+	return 0
 }
 
 type GetCampaignResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	Limit         int32                  `protobuf:"varint,3,opt,name=limit,proto3" json:"limit,omitempty"`
 	IssuedCount   int32                  `protobuf:"varint,4,opt,name=issued_count,json=issuedCount,proto3" json:"issued_count,omitempty"`
@@ -225,11 +225,11 @@ func (*GetCampaignResponse) Descriptor() ([]byte, []int) {
 	return file_proto_campaign_v1_campaign_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *GetCampaignResponse) GetId() string {
+func (x *GetCampaignResponse) GetId() int32 {
 	if x != nil {
 		return x.Id
 	}
-	return ""
+	return 0
 }
 
 func (x *GetCampaignResponse) GetName() string {
@@ -260,17 +260,16 @@ const file_proto_campaign_v1_campaign_proto_rawDesc = "" +
 	" proto/campaign/v1/campaign.proto\x12\vcampaign.v1\"A\n" +
 	"\x15CreateCampaignRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x14\n" +
-	"\x05limit\x18\x02 \x01(\x05R\x05limit\"}\n" +
+	"\x05limit\x18\x02 \x01(\x05R\x05limit\"u\n" +
 	"\x16CreateCampaignResponse\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x1a\n" +
-	"\bgreeting\x18\x02 \x01(\tR\bgreeting\x12\x14\n" +
+	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x12\n" +
+	"\x04name\x18\x02 \x01(\tR\x04name\x12\x14\n" +
 	"\x05limit\x18\x03 \x01(\x05R\x05limit\x12!\n" +
-	"\fissued_count\x18\x04 \x01(\x05R\vissuedCount\"5\n" +
-	"\x12GetCampaignRequest\x12\x1f\n" +
-	"\vcampaign_id\x18\x01 \x01(\tR\n" +
-	"campaignId\"r\n" +
+	"\fissued_count\x18\x04 \x01(\x05R\vissuedCount\"$\n" +
+	"\x12GetCampaignRequest\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\x05R\x02id\"r\n" +
 	"\x13GetCampaignResponse\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
+	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x14\n" +
 	"\x05limit\x18\x03 \x01(\x05R\x05limit\x12!\n" +
 	"\fissued_count\x18\x04 \x01(\x05R\vissuedCount2\xc2\x01\n" +

@@ -17,7 +17,7 @@ func main() {
 	)
 
 	req := connect.NewRequest(&couponv1.IssueCouponRequest{
-		CampaignId: "test-campaign",
+		CampaignId: 1,
 	})
 
 	res, err := client.IssueCoupon(context.Background(), req)
@@ -25,5 +25,5 @@ func main() {
 		log.Fatal("IssueCoupon 호출 실패:", err)
 	}
 
-	log.Printf("응답 받음: CouponId=%s, CouponCode=%s\n", res.Msg.CouponId, res.Msg.CouponCode)
+	log.Printf("응답 받음: CouponId=%d, CouponCode=%s\n", res.Msg.CouponId, res.Msg.CouponCode)
 }
