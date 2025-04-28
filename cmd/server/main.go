@@ -8,15 +8,21 @@ import (
 	couponv1connect "github.com/SuperRPM/coupon-issuance-system/gen/proto/coupon/v1/couponv1connect"
 	campaignhandler "github.com/SuperRPM/coupon-issuance-system/internal/handler/campaign"
 	couponhandler "github.com/SuperRPM/coupon-issuance-system/internal/handler/coupon"
+	campaignrepo "github.com/SuperRPM/coupon-issuance-system/internal/repository/campaign"
+	couponrepo "github.com/SuperRPM/coupon-issuance-system/internal/repository/coupon"
 	campaignservice "github.com/SuperRPM/coupon-issuance-system/internal/service/campaign"
 	couponservice "github.com/SuperRPM/coupon-issuance-system/internal/service/coupon"
 	"github.com/rs/cors"
 )
 
 func main() {
+	// 리포지토리 생성
+	campaignRepo := campaignrepo.NewMemoryRepository()
+	couponRepo := couponrepo.NewMemoryRepository()
+
 	// 서비스 생성
-	campaignService := campaignservice.NewService(nil) // TODO: 리포지토리 구현체 주입
-	couponService := couponservice.NewService(nil)     // TODO: 리포지토리 구현체 주입
+	campaignService := campaignservice.NewService(campaignRepo)
+	couponService := couponservice.NewService(couponRepo)
 
 	// 핸들러 생성
 	campaignHandler := campaignhandler.NewHandler(campaignService)
