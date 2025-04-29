@@ -7,6 +7,7 @@ import (
 	"connectrpc.com/connect"
 	campaignv1 "github.com/SuperRPM/coupon-issuance-system/gen/proto/campaign/v1"
 	"github.com/SuperRPM/coupon-issuance-system/internal/service/campaign"
+	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 // Handler는 캠페인 관련 HTTP 핸들러를 구현합니다.
@@ -38,6 +39,8 @@ func (h *CampaignHandler) CreateCampaign(
 		Name:        c.Name,
 		Limit:       int32(c.Limit),
 		IssuedCount: int32(c.IssuedCount),
+		StartDate:   timestamppb.New(c.StartDate),
+		EndDate:     timestamppb.New(c.EndDate),
 	}
 
 	return connect.NewResponse(response), nil
@@ -60,6 +63,8 @@ func (h *CampaignHandler) GetCampaign(
 		Name:        c.Name,
 		Limit:       int32(c.Limit),
 		IssuedCount: int32(c.IssuedCount),
+		StartDate:   timestamppb.New(c.StartDate),
+		EndDate:     timestamppb.New(c.EndDate),
 	}
 
 	return connect.NewResponse(response), nil

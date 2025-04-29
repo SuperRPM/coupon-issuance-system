@@ -2,6 +2,7 @@ package campaign
 
 import (
 	"context"
+	"time"
 
 	"github.com/SuperRPM/coupon-issuance-system/internal/domain/campaign"
 )
@@ -19,8 +20,8 @@ func NewService(repo campaign.Repository) *CampaignService {
 }
 
 // CreateCampaign은 새로운 캠페인을 생성합니다.
-func (s *CampaignService) CreateCampaign(ctx context.Context, name string, limit int) (*campaign.Campaign, error) {
-	c := campaign.NewCampaign(name, limit)
+func (s *CampaignService) CreateCampaign(ctx context.Context, name string, limit int, startDate time.Time, endDate time.Time) (*campaign.Campaign, error) {
+	c := campaign.NewCampaign(name, limit, startDate, endDate)
 	if err := s.repo.Create(c); err != nil {
 		return nil, err
 	}

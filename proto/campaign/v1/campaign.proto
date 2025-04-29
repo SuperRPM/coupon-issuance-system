@@ -2,6 +2,8 @@ syntax = "proto3";
 
 package campaign.v1;
 
+import "google/protobuf/timestamp.proto";
+
 option go_package = "github.com/SuperRPM/coupon-issuance-system/gen/campaign/v1;campaignv1";
 
 service CampaignService {
@@ -12,6 +14,8 @@ service CampaignService {
 message CreateCampaignRequest {
   string name = 1;
   int32 limit = 2;
+  google.protobuf.Timestamp start_date = 3;
+  google.protobuf.Timestamp end_date = 4;
 }
 
 message CreateCampaignResponse {
@@ -19,6 +23,8 @@ message CreateCampaignResponse {
   string name = 2;
   int32 limit = 3;
   int32 issued_count = 4;
+  google.protobuf.Timestamp start_date = 5;
+  google.protobuf.Timestamp end_date = 6;
 }
 
 message GetCampaignRequest {
@@ -30,4 +36,6 @@ message GetCampaignResponse {
   string name = 2;
   int32 limit = 3;
   int32 issued_count = 4;
+  google.protobuf.Timestamp start_date = 5;
+  google.protobuf.Timestamp end_date = 6;
 }

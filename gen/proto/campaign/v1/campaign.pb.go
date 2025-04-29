@@ -9,6 +9,7 @@ package campaignv1
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -25,6 +26,8 @@ type CreateCampaignRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
 	Limit         int32                  `protobuf:"varint,2,opt,name=limit,proto3" json:"limit,omitempty"`
+	StartDate     *timestamppb.Timestamp `protobuf:"bytes,3,opt,name=start_date,json=startDate,proto3" json:"start_date,omitempty"`
+	EndDate       *timestamppb.Timestamp `protobuf:"bytes,4,opt,name=end_date,json=endDate,proto3" json:"end_date,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -73,12 +76,28 @@ func (x *CreateCampaignRequest) GetLimit() int32 {
 	return 0
 }
 
+func (x *CreateCampaignRequest) GetStartDate() *timestamppb.Timestamp {
+	if x != nil {
+		return x.StartDate
+	}
+	return nil
+}
+
+func (x *CreateCampaignRequest) GetEndDate() *timestamppb.Timestamp {
+	if x != nil {
+		return x.EndDate
+	}
+	return nil
+}
+
 type CreateCampaignResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	Limit         int32                  `protobuf:"varint,3,opt,name=limit,proto3" json:"limit,omitempty"`
 	IssuedCount   int32                  `protobuf:"varint,4,opt,name=issued_count,json=issuedCount,proto3" json:"issued_count,omitempty"`
+	StartDate     *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=start_date,json=startDate,proto3" json:"start_date,omitempty"`
+	EndDate       *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=end_date,json=endDate,proto3" json:"end_date,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -141,6 +160,20 @@ func (x *CreateCampaignResponse) GetIssuedCount() int32 {
 	return 0
 }
 
+func (x *CreateCampaignResponse) GetStartDate() *timestamppb.Timestamp {
+	if x != nil {
+		return x.StartDate
+	}
+	return nil
+}
+
+func (x *CreateCampaignResponse) GetEndDate() *timestamppb.Timestamp {
+	if x != nil {
+		return x.EndDate
+	}
+	return nil
+}
+
 type GetCampaignRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            int32                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
@@ -191,6 +224,8 @@ type GetCampaignResponse struct {
 	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
 	Limit         int32                  `protobuf:"varint,3,opt,name=limit,proto3" json:"limit,omitempty"`
 	IssuedCount   int32                  `protobuf:"varint,4,opt,name=issued_count,json=issuedCount,proto3" json:"issued_count,omitempty"`
+	StartDate     *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=start_date,json=startDate,proto3" json:"start_date,omitempty"`
+	EndDate       *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=end_date,json=endDate,proto3" json:"end_date,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -253,26 +288,49 @@ func (x *GetCampaignResponse) GetIssuedCount() int32 {
 	return 0
 }
 
+func (x *GetCampaignResponse) GetStartDate() *timestamppb.Timestamp {
+	if x != nil {
+		return x.StartDate
+	}
+	return nil
+}
+
+func (x *GetCampaignResponse) GetEndDate() *timestamppb.Timestamp {
+	if x != nil {
+		return x.EndDate
+	}
+	return nil
+}
+
 var File_proto_campaign_v1_campaign_proto protoreflect.FileDescriptor
 
 const file_proto_campaign_v1_campaign_proto_rawDesc = "" +
 	"\n" +
-	" proto/campaign/v1/campaign.proto\x12\vcampaign.v1\"A\n" +
+	" proto/campaign/v1/campaign.proto\x12\vcampaign.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"\xb3\x01\n" +
 	"\x15CreateCampaignRequest\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x14\n" +
-	"\x05limit\x18\x02 \x01(\x05R\x05limit\"u\n" +
+	"\x05limit\x18\x02 \x01(\x05R\x05limit\x129\n" +
+	"\n" +
+	"start_date\x18\x03 \x01(\v2\x1a.google.protobuf.TimestampR\tstartDate\x125\n" +
+	"\bend_date\x18\x04 \x01(\v2\x1a.google.protobuf.TimestampR\aendDate\"\xe7\x01\n" +
 	"\x16CreateCampaignResponse\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x14\n" +
 	"\x05limit\x18\x03 \x01(\x05R\x05limit\x12!\n" +
-	"\fissued_count\x18\x04 \x01(\x05R\vissuedCount\"$\n" +
+	"\fissued_count\x18\x04 \x01(\x05R\vissuedCount\x129\n" +
+	"\n" +
+	"start_date\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tstartDate\x125\n" +
+	"\bend_date\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\aendDate\"$\n" +
 	"\x12GetCampaignRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x05R\x02id\"r\n" +
+	"\x02id\x18\x01 \x01(\x05R\x02id\"\xe4\x01\n" +
 	"\x13GetCampaignResponse\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x14\n" +
 	"\x05limit\x18\x03 \x01(\x05R\x05limit\x12!\n" +
-	"\fissued_count\x18\x04 \x01(\x05R\vissuedCount2\xc2\x01\n" +
+	"\fissued_count\x18\x04 \x01(\x05R\vissuedCount\x129\n" +
+	"\n" +
+	"start_date\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tstartDate\x125\n" +
+	"\bend_date\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\aendDate2\xc2\x01\n" +
 	"\x0fCampaignService\x12[\n" +
 	"\x0eCreateCampaign\x12\".campaign.v1.CreateCampaignRequest\x1a#.campaign.v1.CreateCampaignResponse\"\x00\x12R\n" +
 	"\vGetCampaign\x12\x1f.campaign.v1.GetCampaignRequest\x1a .campaign.v1.GetCampaignResponse\"\x00B\xba\x01\n" +
@@ -296,17 +354,24 @@ var file_proto_campaign_v1_campaign_proto_goTypes = []any{
 	(*CreateCampaignResponse)(nil), // 1: campaign.v1.CreateCampaignResponse
 	(*GetCampaignRequest)(nil),     // 2: campaign.v1.GetCampaignRequest
 	(*GetCampaignResponse)(nil),    // 3: campaign.v1.GetCampaignResponse
+	(*timestamppb.Timestamp)(nil),  // 4: google.protobuf.Timestamp
 }
 var file_proto_campaign_v1_campaign_proto_depIdxs = []int32{
-	0, // 0: campaign.v1.CampaignService.CreateCampaign:input_type -> campaign.v1.CreateCampaignRequest
-	2, // 1: campaign.v1.CampaignService.GetCampaign:input_type -> campaign.v1.GetCampaignRequest
-	1, // 2: campaign.v1.CampaignService.CreateCampaign:output_type -> campaign.v1.CreateCampaignResponse
-	3, // 3: campaign.v1.CampaignService.GetCampaign:output_type -> campaign.v1.GetCampaignResponse
-	2, // [2:4] is the sub-list for method output_type
-	0, // [0:2] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	4, // 0: campaign.v1.CreateCampaignRequest.start_date:type_name -> google.protobuf.Timestamp
+	4, // 1: campaign.v1.CreateCampaignRequest.end_date:type_name -> google.protobuf.Timestamp
+	4, // 2: campaign.v1.CreateCampaignResponse.start_date:type_name -> google.protobuf.Timestamp
+	4, // 3: campaign.v1.CreateCampaignResponse.end_date:type_name -> google.protobuf.Timestamp
+	4, // 4: campaign.v1.GetCampaignResponse.start_date:type_name -> google.protobuf.Timestamp
+	4, // 5: campaign.v1.GetCampaignResponse.end_date:type_name -> google.protobuf.Timestamp
+	0, // 6: campaign.v1.CampaignService.CreateCampaign:input_type -> campaign.v1.CreateCampaignRequest
+	2, // 7: campaign.v1.CampaignService.GetCampaign:input_type -> campaign.v1.GetCampaignRequest
+	1, // 8: campaign.v1.CampaignService.CreateCampaign:output_type -> campaign.v1.CreateCampaignResponse
+	3, // 9: campaign.v1.CampaignService.GetCampaign:output_type -> campaign.v1.GetCampaignResponse
+	8, // [8:10] is the sub-list for method output_type
+	6, // [6:8] is the sub-list for method input_type
+	6, // [6:6] is the sub-list for extension type_name
+	6, // [6:6] is the sub-list for extension extendee
+	0, // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_proto_campaign_v1_campaign_proto_init() }
