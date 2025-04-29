@@ -86,11 +86,9 @@ func (s *Service) getHangulUniqueCode() string {
 
 	for i := 0; i < 10; i++ {
 		if rand.Intn(10) != 0 {
-			// 한글 생성
-			hangul := rune(rand.Intn(end-start+1) + start) // 한글 유니코드 범위: 0xAC00 ~ 0xD7A3
+			hangul := rune(rand.Intn(end-start+1) + start)
 			builder.WriteRune(hangul)
 		} else {
-			// 숫자 생성
 			number := rune(rand.Intn(10) + '0') // '0' ~ '9'
 			builder.WriteRune(number)
 		}

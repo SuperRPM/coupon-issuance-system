@@ -47,7 +47,7 @@ func TestConcurrentIssueCoupon(t *testing.T) {
 			if err != nil {
 				errorCount++
 				if err.Error() != "campaign limit exceeded" {
-					t.Errorf("예상치 못한 에러: %v", err)
+					t.Errorf("over booking: %v", err)
 				}
 			} else {
 				successCount++
