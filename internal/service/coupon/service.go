@@ -2,34 +2,67 @@ package coupon
 
 import (
 	"context"
+	"errors"
 	"math/rand"
 	"strings"
+	"sync"
 
 	"github.com/SuperRPM/coupon-issuance-system/internal/domain/coupon"
+	"github.com/SuperRPM/coupon-issuance-system/internal/service/campaign"
 	"github.com/google/uuid"
 )
 
 // Service는 쿠폰 관련 비즈니스 로직을 처리합니다.
 type Service struct {
-	repo      coupon.Repository
-	usedCodes map[string]bool
+	repo            coupon.Repository
+	campaignService *campaign.CampaignService
+	usedCodes       map[string]bool
+	mu              sync.RWMutex
 }
 
 // NewService는 새로운 쿠폰 서비스를 생성합니다.
-func NewService(repo coupon.Repository) *Service {
+func NewService(repo coupon.Repository, campaignService *campaign.CampaignService) *Service {
 	return &Service{
-		repo:      repo,
-		usedCodes: make(map[string]bool),
+		repo:            repo,
+		campaignService: campaignService,
+		usedCodes:       make(map[string]bool),
 	}
 }
 
 // IssueCoupon은 새로운 쿠폰을 발급합니다.
 func (s *Service) IssueCoupon(ctx context.Context, campaignID int) (*coupon.Coupon, error) {
-	code := s.convertUUIDToHangul()
-	c := coupon.NewCoupon(campaignID, code)
-	if err := s.repo.Create(c); err != nil {
+	// 캠페인 조회
+	campaign, err := s.campaignService.GetCampaign(ctx, campaignID)
+	if err != nil {
 		return nil, err
 	}
+
+	// 캠페인이 존재하지 않는 경우
+	if campaign == nil {
+		return nil, errors.New("campaign not found")
+	}
+
+	// 발급 제한 확인
+	if !campaign.CanIssue() {
+		return nil, errors.New("campaign limit exceeded")
+	}
+
+	// 쿠폰 코드 생성
+	code := s.convertUUIDToHangul()
+
+	// 쿠폰 생성
+	c := coupon.NewCoupon(campaignID, code)
+	if err := s.repo.Create(c); err != nil {
+		// 실패 시 사용된 코드 맵에서 제거
+		s.mu.Lock()
+		delete(s.usedCodes, code)
+		s.mu.Unlock()
+		return nil, err
+	}
+
+	// 캠페인의 발급 수 증가
+	campaign.Issue()
+
 	return c, nil
 }
 
@@ -112,11 +145,12 @@ func (s *Service) convertUUIDToHangul() string {
 
 	// builder.String() 값이 이미 사용된 코드인지 확인
 	// 사용된 코드라면 다시 생성
+	s.mu.Lock()
 	if s.usedCodes[builder.String()] {
 		return s.convertUUIDToHangul()
 	}
 
 	s.usedCodes[builder.String()] = true
-
+	s.mu.Unlock()
 	return builder.String()
 }
