@@ -38,12 +38,11 @@ func (h *CampaignHandler) CreateCampaign(
 	}
 
 	response := &campaignv1.CreateCampaignResponse{
-		Id:          int32(c.ID),
-		Name:        c.Name,
-		Limit:       int32(c.Limit),
-		IssuedCount: int32(c.IssuedCount),
-		StartDate:   timestamppb.New(c.StartDate),
-		EndDate:     timestamppb.New(c.EndDate),
+		Id:        int32(c.ID),
+		Name:      c.Name,
+		Limit:     int32(c.Limit),
+		StartDate: timestamppb.New(c.StartDate),
+		EndDate:   timestamppb.New(c.EndDate),
 	}
 
 	return connect.NewResponse(response), nil
@@ -70,7 +69,6 @@ func (h *CampaignHandler) GetCampaign(
 		Id:          int32(c.ID),
 		Name:        c.Name,
 		Limit:       int32(c.Limit),
-		IssuedCount: int32(c.IssuedCount),
 		StartDate:   timestamppb.New(c.StartDate),
 		EndDate:     timestamppb.New(c.EndDate),
 		CouponCodes: couponCodes,
