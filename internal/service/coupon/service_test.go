@@ -13,15 +13,14 @@ import (
 )
 
 func TestConcurrentIssueCoupon(t *testing.T) {
-	// 메모리 기반 리포지토리 및 서비스 생성
 	campaignRepo := campaignrepo.NewMemoryRepository()
 	couponRepo := couponrepo.NewMemoryRepository()
 
 	campaignService := campaignservice.NewService(campaignRepo, couponRepo)
 	couponService := NewService(couponRepo, campaignService)
 
-	// 캠페인 생성 (limit 설정)
-	limit := 500
+	// 캠페인 생성
+	limit := 20000
 	start := time.Now()
 	end := start.Add(time.Hour)
 	camp, err := campaignService.CreateCampaign(context.Background(), "LoadTest", limit, start, end)
@@ -30,7 +29,7 @@ func TestConcurrentIssueCoupon(t *testing.T) {
 	}
 
 	// 동시 요청 수: limit 초과하도록 설정
-	requests := 1000
+	requests := 25000
 	var wg sync.WaitGroup
 	var mu sync.Mutex
 	successCount := 0

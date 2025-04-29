@@ -10,7 +10,7 @@ import (
 )
 
 func TestCreateCampaign(t *testing.T) {
-	// 메모리 기반 리포지토리 생성
+	// 리포지토리 및 서비스 생성
 	campaignRepo := campaignrepo.NewMemoryRepository()
 	couponRepo := couponrepo.NewMemoryRepository()
 	svc := NewService(campaignRepo, couponRepo)
@@ -21,13 +21,11 @@ func TestCreateCampaign(t *testing.T) {
 	start := time.Now()
 	end := start.AddDate(0, 0, 30)
 
-	// 캠페인 생성 호출
 	c, err := svc.CreateCampaign(context.Background(), name, limit, start, end)
 	if err != nil {
 		t.Fatalf("CreateCampaign 실패: %v", err)
 	}
 
-	// 반환된 캠페인 필드 검증
 	if c.ID != 1 {
 		t.Errorf("ID: 예상 1, 실제 %d", c.ID)
 	}
@@ -44,7 +42,6 @@ func TestCreateCampaign(t *testing.T) {
 		t.Errorf("EndDate: 예상 %v, 실제 %v", end, c.EndDate)
 	}
 
-	// 저장소에 올바르게 저장되었는지 검증
 	stored, err := campaignRepo.Get(c.ID)
 	if err != nil {
 		t.Fatalf("Get 실패: %v", err)
@@ -52,7 +49,6 @@ func TestCreateCampaign(t *testing.T) {
 	if stored == nil {
 		t.Fatal("저장된 캠페인이 존재하지 않습니다")
 	}
-	// 저장된 값과 반환된 값 비교
 	if stored.ID != c.ID || stored.Name != c.Name || stored.Limit != c.Limit {
 		t.Errorf("저장된 캠페인 필드 불일치: %+v vs %+v", stored, c)
 	}
