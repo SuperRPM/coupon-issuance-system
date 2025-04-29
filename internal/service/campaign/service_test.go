@@ -18,8 +18,11 @@ func TestCreateCampaign(t *testing.T) {
 	name := "Test Campaign"
 	limit := 10
 
+	start := time.Now()
+	end := start.AddDate(0, 0, 30)
+
 	// 캠페인 생성 호출
-	c, err := svc.CreateCampaign(context.Background(), name, limit, time.Now(), time.Now().AddDate(0, 0, 30))
+	c, err := svc.CreateCampaign(context.Background(), name, limit, start, end)
 	if err != nil {
 		t.Fatalf("CreateCampaign 실패: %v", err)
 	}
@@ -33,6 +36,12 @@ func TestCreateCampaign(t *testing.T) {
 	}
 	if c.Limit != limit {
 		t.Errorf("Limit: 예상 %d, 실제 %d", limit, c.Limit)
+	}
+	if !c.StartDate.Equal(start) {
+		t.Errorf("StartDate: 예상 %v, 실제 %v", start, c.StartDate)
+	}
+	if !c.EndDate.Equal(end) {
+		t.Errorf("EndDate: 예상 %v, 실제 %v", end, c.EndDate)
 	}
 
 	// 저장소에 올바르게 저장되었는지 검증
