@@ -22,7 +22,7 @@ func main() {
 
 	// 서비스 생성
 	campaignService := campaignservice.NewService(campaignRepo)
-	couponService := couponservice.NewService(couponRepo)
+	couponService := couponservice.NewService(couponRepo, campaignService)
 
 	// 핸들러 생성
 	campaignHandler := campaignhandler.NewHandler(campaignService)
