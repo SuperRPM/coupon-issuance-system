@@ -58,7 +58,21 @@ func (s *Service) IssueCoupon(ctx context.Context, campaignID int) (*coupon.Coup
 		return nil, errors.New("campaign expired")
 	}
 
-	code := s.getHangulUniqueCode()
+	// 고유 코드 생성: 중복 방지를 위해 최대 5회 시도
+	const maxRetries = 5
+	var code string
+	var ok bool
+	for i := 0; i < maxRetries; i++ {
+		code = s.getHangulUniqueCode()
+		if !s.usedCodes[code] {
+			s.usedCodes[code] = true
+			ok = true
+			break
+		}
+	}
+	if !ok {
+		return nil, errors.New("failed to generate unique coupon code")
+	}
 
 	c := coupon.NewCoupon(campaignID, code)
 	if err := s.repo.Create(c); err != nil {
