@@ -31,3 +31,10 @@ func (r *MemoryRepository) GetCount(campaignID int) (int, error) {
 
 	return len(r.coupons[campaignID]), nil
 }
+
+func (r *MemoryRepository) GetList(campaignID int) ([]string, error) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+
+	return r.coupons[campaignID], nil
+}

@@ -21,11 +21,11 @@ func main() {
 	couponRepo := couponrepo.NewMemoryRepository()
 
 	// 서비스 생성
-	campaignService := campaignservice.NewService(campaignRepo)
+	campaignService := campaignservice.NewService(campaignRepo, couponRepo)
 	couponService := couponservice.NewService(couponRepo, campaignService)
 
 	// 핸들러 생성
-	campaignHandler := campaignhandler.NewHandler(campaignService)
+	campaignHandler := campaignhandler.NewHandler(campaignService, couponService)
 	couponHandler := couponhandler.NewHandler(couponService)
 
 	// HTTP 라우터 설정

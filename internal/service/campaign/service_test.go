@@ -6,12 +6,14 @@ import (
 	"time"
 
 	campaignrepo "github.com/SuperRPM/coupon-issuance-system/internal/repository/campaign"
+	couponrepo "github.com/SuperRPM/coupon-issuance-system/internal/repository/coupon"
 )
 
 func TestCreateCampaign(t *testing.T) {
 	// 메모리 기반 리포지토리 생성
-	r := campaignrepo.NewMemoryRepository()
-	svc := NewService(r)
+	campaignRepo := campaignrepo.NewMemoryRepository()
+	couponRepo := couponrepo.NewMemoryRepository()
+	svc := NewService(campaignRepo, couponRepo)
 
 	name := "Test Campaign"
 	limit := 10
@@ -32,12 +34,9 @@ func TestCreateCampaign(t *testing.T) {
 	if c.Limit != limit {
 		t.Errorf("Limit: 예상 %d, 실제 %d", limit, c.Limit)
 	}
-	if c.IssuedCount != 0 {
-		t.Errorf("IssuedCount: 예상 0, 실제 %d", c.IssuedCount)
-	}
 
 	// 저장소에 올바르게 저장되었는지 검증
-	stored, err := r.Get(c.ID)
+	stored, err := campaignRepo.Get(c.ID)
 	if err != nil {
 		t.Fatalf("Get 실패: %v", err)
 	}
@@ -45,7 +44,7 @@ func TestCreateCampaign(t *testing.T) {
 		t.Fatal("저장된 캠페인이 존재하지 않습니다")
 	}
 	// 저장된 값과 반환된 값 비교
-	if stored.ID != c.ID || stored.Name != c.Name || stored.Limit != c.Limit || stored.IssuedCount != c.IssuedCount {
+	if stored.ID != c.ID || stored.Name != c.Name || stored.Limit != c.Limit {
 		t.Errorf("저장된 캠페인 필드 불일치: %+v vs %+v", stored, c)
 	}
 }

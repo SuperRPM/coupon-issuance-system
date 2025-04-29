@@ -226,6 +226,7 @@ type GetCampaignResponse struct {
 	IssuedCount   int32                  `protobuf:"varint,4,opt,name=issued_count,json=issuedCount,proto3" json:"issued_count,omitempty"`
 	StartDate     *timestamppb.Timestamp `protobuf:"bytes,5,opt,name=start_date,json=startDate,proto3" json:"start_date,omitempty"`
 	EndDate       *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=end_date,json=endDate,proto3" json:"end_date,omitempty"`
+	CouponCodes   []string               `protobuf:"bytes,7,rep,name=coupon_codes,json=couponCodes,proto3" json:"coupon_codes,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -302,6 +303,13 @@ func (x *GetCampaignResponse) GetEndDate() *timestamppb.Timestamp {
 	return nil
 }
 
+func (x *GetCampaignResponse) GetCouponCodes() []string {
+	if x != nil {
+		return x.CouponCodes
+	}
+	return nil
+}
+
 var File_proto_campaign_v1_campaign_proto protoreflect.FileDescriptor
 
 const file_proto_campaign_v1_campaign_proto_rawDesc = "" +
@@ -322,7 +330,7 @@ const file_proto_campaign_v1_campaign_proto_rawDesc = "" +
 	"start_date\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tstartDate\x125\n" +
 	"\bend_date\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\aendDate\"$\n" +
 	"\x12GetCampaignRequest\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\x05R\x02id\"\xe4\x01\n" +
+	"\x02id\x18\x01 \x01(\x05R\x02id\"\x87\x02\n" +
 	"\x13GetCampaignResponse\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\x05R\x02id\x12\x12\n" +
 	"\x04name\x18\x02 \x01(\tR\x04name\x12\x14\n" +
@@ -330,7 +338,8 @@ const file_proto_campaign_v1_campaign_proto_rawDesc = "" +
 	"\fissued_count\x18\x04 \x01(\x05R\vissuedCount\x129\n" +
 	"\n" +
 	"start_date\x18\x05 \x01(\v2\x1a.google.protobuf.TimestampR\tstartDate\x125\n" +
-	"\bend_date\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\aendDate2\xc2\x01\n" +
+	"\bend_date\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\aendDate\x12!\n" +
+	"\fcoupon_codes\x18\a \x03(\tR\vcouponCodes2\xc2\x01\n" +
 	"\x0fCampaignService\x12[\n" +
 	"\x0eCreateCampaign\x12\".campaign.v1.CreateCampaignRequest\x1a#.campaign.v1.CreateCampaignResponse\"\x00\x12R\n" +
 	"\vGetCampaign\x12\x1f.campaign.v1.GetCampaignRequest\x1a .campaign.v1.GetCampaignResponse\"\x00B\xba\x01\n" +

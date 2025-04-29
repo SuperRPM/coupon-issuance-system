@@ -7,18 +7,21 @@ import (
 	"connectrpc.com/connect"
 	campaignv1 "github.com/SuperRPM/coupon-issuance-system/gen/proto/campaign/v1"
 	"github.com/SuperRPM/coupon-issuance-system/internal/service/campaign"
+	"github.com/SuperRPM/coupon-issuance-system/internal/service/coupon"
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
 // Handler는 캠페인 관련 HTTP 핸들러를 구현합니다.
 type CampaignHandler struct {
-	service *campaign.CampaignService
+	campaignService *campaign.CampaignService
+	couponService   *coupon.Service
 }
 
 // NewHandler는 새로운 캠페인 핸들러를 생성합니다.
-func NewHandler(service *campaign.CampaignService) *CampaignHandler {
+func NewHandler(campaignService *campaign.CampaignService, couponService *coupon.Service) *CampaignHandler {
 	return &CampaignHandler{
-		service: service,
+		campaignService: campaignService,
+		couponService:   couponService,
 	}
 }
 
@@ -29,7 +32,7 @@ func (h *CampaignHandler) CreateCampaign(
 ) (*connect.Response[campaignv1.CreateCampaignResponse], error) {
 	log.Println("CreateCampaign called with:", req.Msg)
 
-	c, err := h.service.CreateCampaign(ctx, req.Msg.Name, int(req.Msg.Limit))
+	c, err := h.campaignService.CreateCampaign(ctx, req.Msg.Name, int(req.Msg.Limit), req.Msg.StartDate.AsTime(), req.Msg.EndDate.AsTime())
 	if err != nil {
 		return nil, err
 	}
@@ -53,7 +56,12 @@ func (h *CampaignHandler) GetCampaign(
 ) (*connect.Response[campaignv1.GetCampaignResponse], error) {
 	log.Println("GetCampaign called with:", req.Msg)
 
-	c, err := h.service.GetCampaign(ctx, int(req.Msg.Id))
+	c, err := h.campaignService.GetCampaign(ctx, int(req.Msg.Id))
+	if err != nil {
+		return nil, err
+	}
+
+	couponCodes, err := h.couponService.GetListCodes(ctx, int(req.Msg.Id))
 	if err != nil {
 		return nil, err
 	}
@@ -65,6 +73,7 @@ func (h *CampaignHandler) GetCampaign(
 		IssuedCount: int32(c.IssuedCount),
 		StartDate:   timestamppb.New(c.StartDate),
 		EndDate:     timestamppb.New(c.EndDate),
+		CouponCodes: couponCodes,
 	}
 
 	return connect.NewResponse(response), nil

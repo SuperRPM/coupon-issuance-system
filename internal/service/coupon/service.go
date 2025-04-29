@@ -6,6 +6,7 @@ import (
 	"math/rand"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/SuperRPM/coupon-issuance-system/internal/domain/coupon"
 	"github.com/SuperRPM/coupon-issuance-system/internal/service/campaign"
@@ -31,6 +32,9 @@ func NewService(repo coupon.Repository, campaignService *campaign.CampaignServic
 
 // IssueCoupon은 새로운 쿠폰을 발급합니다.
 func (s *Service) IssueCoupon(ctx context.Context, campaignID int) (*coupon.Coupon, error) {
+	s.mu.Lock()
+	defer s.mu.Unlock()
+
 	// 캠페인 조회
 	campaign, err := s.campaignService.GetCampaign(ctx, campaignID)
 	if err != nil {
@@ -42,9 +46,24 @@ func (s *Service) IssueCoupon(ctx context.Context, campaignID int) (*coupon.Coup
 		return nil, errors.New("campaign not found")
 	}
 
+	// 쿠폰 레포지토리에서 발급된 쿠폰 수 가져오기
+	couponCount, err := s.repo.GetCount(campaignID)
+	if err != nil {
+		return nil, err
+	}
+
 	// 발급 제한 확인
-	if !campaign.CanIssue() {
+	if campaign.Limit <= couponCount {
 		return nil, errors.New("campaign limit exceeded")
+	}
+
+	// 날짜 제한 확인
+	if campaign.StartDate.After(time.Now()) {
+		return nil, errors.New("campaign not started")
+	}
+
+	if campaign.EndDate.Before(time.Now()) {
+		return nil, errors.New("campaign expired")
 	}
 
 	// 쿠폰 코드 생성
@@ -54,9 +73,7 @@ func (s *Service) IssueCoupon(ctx context.Context, campaignID int) (*coupon.Coup
 	c := coupon.NewCoupon(campaignID, code)
 	if err := s.repo.Create(c); err != nil {
 		// 실패 시 사용된 코드 맵에서 제거
-		s.mu.Lock()
 		delete(s.usedCodes, code)
-		s.mu.Unlock()
 		return nil, err
 	}
 
@@ -144,13 +161,20 @@ func (s *Service) convertUUIDToHangul() string {
 	}
 
 	// builder.String() 값이 이미 사용된 코드인지 확인
-	// 사용된 코드라면 다시 생성
-	s.mu.Lock()
 	if s.usedCodes[builder.String()] {
 		return s.convertUUIDToHangul()
 	}
 
 	s.usedCodes[builder.String()] = true
-	s.mu.Unlock()
 	return builder.String()
+}
+
+// GetListCodes는 캠페인 ID를 기반으로 쿠폰 코드 목록을 반환합니다.
+func (s *Service) GetListCodes(ctx context.Context, campaignID int) ([]string, error) {
+	coupons, err := s.repo.GetList(campaignID)
+	if err != nil {
+		return nil, err
+	}
+
+	return coupons, nil
 }

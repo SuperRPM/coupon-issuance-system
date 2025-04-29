@@ -23,12 +23,7 @@ func NewCampaign(name string, limit int, startDate time.Time, endDate time.Time)
 	}
 }
 
-// CanIssue는 쿠폰을 발급할 수 있는지 확인합니다.
-func (c *Campaign) CanIssue() bool {
-	return c.IssuedCount < c.Limit
-}
-
-// Issue는 쿠폰을 발급합니다.
+// Issue는 발급된 쿠폰 수를 증가시킵니다.
 func (c *Campaign) Issue() {
 	c.IssuedCount++
 }
