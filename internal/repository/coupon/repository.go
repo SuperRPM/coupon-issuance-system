@@ -24,3 +24,10 @@ func (r *MemoryRepository) Create(c *coupon.Coupon) error {
 	r.coupons[c.CampaignID] = append(r.coupons[c.CampaignID], c.Code)
 	return nil
 }
+
+func (r *MemoryRepository) GetCount(campaignID int) (int, error) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+
+	return len(r.coupons[campaignID]), nil
+}
