@@ -4,7 +4,7 @@ import "context"
 
 type Handler interface {
 	IssueCoupon(ctx context.Context, campaignID int) (*Coupon, error)
-	GetListCodes(ctx context.Context, campaignID int) ([]string, error)
+	// GetListCodes(ctx context.Context, campaignID int) ([]string, error)
 }
 
 type Service interface {

@@ -11,13 +11,11 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-// Handler는 캠페인 관련 HTTP 핸들러를 구현합니다.
 type CampaignHandler struct {
 	campaignService *campaign.CampaignService
 	couponService   *coupon.Service
 }
 
-// NewHandler는 새로운 캠페인 핸들러를 생성합니다.
 func NewHandler(campaignService *campaign.CampaignService, couponService *coupon.Service) *CampaignHandler {
 	return &CampaignHandler{
 		campaignService: campaignService,
@@ -25,7 +23,6 @@ func NewHandler(campaignService *campaign.CampaignService, couponService *coupon
 	}
 }
 
-// CreateCampaign은 새로운 캠페인을 생성합니다.
 func (h *CampaignHandler) CreateCampaign(
 	ctx context.Context,
 	req *connect.Request[campaignv1.CreateCampaignRequest],
@@ -48,7 +45,6 @@ func (h *CampaignHandler) CreateCampaign(
 	return connect.NewResponse(response), nil
 }
 
-// GetCampaign은 ID로 캠페인을 조회합니다.
 func (h *CampaignHandler) GetCampaign(
 	ctx context.Context,
 	req *connect.Request[campaignv1.GetCampaignRequest],

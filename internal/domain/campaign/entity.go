@@ -2,7 +2,6 @@ package campaign
 
 import "time"
 
-// Campaign은 쿠폰 캠페인을 나타내는 엔티티입니다.
 type Campaign struct {
 	ID          int
 	Name        string
@@ -12,7 +11,6 @@ type Campaign struct {
 	IssuedCount int
 }
 
-// NewCampaign은 새로운 캠페인을 생성합니다.
 func NewCampaign(name string, limit int, startDate time.Time, endDate time.Time) *Campaign {
 	return &Campaign{
 		Name:        name,
@@ -21,9 +19,4 @@ func NewCampaign(name string, limit int, startDate time.Time, endDate time.Time)
 		EndDate:     endDate,
 		IssuedCount: 0,
 	}
-}
-
-// Issue는 발급된 쿠폰 수를 증가시킵니다.
-func (c *Campaign) Issue() {
-	c.IssuedCount++
 }

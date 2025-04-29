@@ -25,16 +25,16 @@ func (r *MemoryRepository) Create(c *coupon.Coupon) error {
 	return nil
 }
 
-func (r *MemoryRepository) GetCount(campaignID int) (int, error) {
-	r.mu.Lock()
-	defer r.mu.Unlock()
-
-	return len(r.coupons[campaignID]), nil
-}
-
 func (r *MemoryRepository) GetList(campaignID int) ([]string, error) {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
 	return r.coupons[campaignID], nil
+}
+
+func (r *MemoryRepository) GetCount(campaignID int) (int, error) {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+
+	return len(r.coupons[campaignID]), nil
 }

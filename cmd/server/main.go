@@ -28,13 +28,10 @@ func main() {
 	campaignHandler := campaignhandler.NewHandler(campaignService, couponService)
 	couponHandler := couponhandler.NewHandler(couponService)
 
-	// HTTP 라우터 설정
+	// Router
 	mux := http.NewServeMux()
 
-	// 캠페인 핸들러 등록
 	mux.Handle(campaignv1connect.NewCampaignServiceHandler(campaignHandler))
-
-	// 쿠폰 핸들러 등록
 	mux.Handle(couponv1connect.NewCouponServiceHandler(couponHandler))
 
 	// CORS 설정
@@ -47,7 +44,7 @@ func main() {
 		AllowedHeaders: []string{"*"},
 	}).Handler(mux)
 
-	log.Println("서버가 8080 포트에서 시작됩니다...")
+	log.Println("Server is running on port 8080")
 	if err := http.ListenAndServe(":8080", corsHandler); err != nil {
 		log.Fatal(err)
 	}
